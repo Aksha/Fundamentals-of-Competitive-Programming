@@ -1,0 +1,113 @@
+/*
+ *  Homework 11 - Distribution Sorts
+ *
+ */
+ /*
+  *  Bucket Sort
+  *
+  *  Prompt:    Given an unsorted array of numbers which are randomly distributed
+  *             across the a range, sort the numbers using bucket sort.
+  *
+  *  Input:     {ArrayList} - doubles
+  *  Input:     {Double} - minimum of range (inclusive)
+  *  Input:     {Double} - maximum of range (exclusive)
+  *
+  *  Output:    {ArrayList}
+  *
+  *  Example:   [0.897, 0.565, 0.656, 0.1234, 0.665, 0.3434], 0.0, 1.0 -->
+  *             [0.1234, 0.3434, 0.565, 0.656, 0.665, 0.897]
+  *
+  *  HINT:      Use either N buckets or square root of N buckets
+  *             Recursively sort each bucket using bucketsort until the bucket
+  *             size is less than 50.
+  */
+
+ ------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Solution:
+-------------------------------------------------------------------------------------------------------------------------------
+  // Average Time Complexity: O(n+k) where n is the length of the input sequence and k is the number of buckets.
+  // Worst Case Time Complexity: O(n^2)
+  // Auxiliary Space Complexity: O(n)
+ 
+ vector<int> bucketSort(vector<int> a, int n) {
+    int i, j, k, buckets[n];
+    
+    for(i = 0; i < n; ++i)
+        buckets[i] = 0;
+    
+    for(i = 0; i < n; ++i)
+        ++buckets[a[i]];
+        
+    for(i = 0, j = 0; j < n; ++j)
+        for(k = buckets[j]; k > 0; --k)
+            a[i++] = j;
+    return a;
+}
+ 
+
+
+ /*
+  *  Kth Smallest Element in a Range
+  *
+  *  Prompt:    Given an unsorted array of whole integers in the range
+  *             1000 to 9000, find the Kth smallest element in linear time
+  *             The array can have duplicates.
+  *
+  *  Input:     {Array} - ints from 1000 to 9000
+  *  Input:     {Integer} - target element
+  *
+  *  Output:    {Integer} - kth smalest element in the range
+  *
+  *  Example:   array = [1984, 1337, 9000, 8304, 5150, 9000, 8304], k=5
+  *             output = 8304
+  *
+  */
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+ Solution:
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+  // Time Complexity: O(n) amortized using Quick select. Worst case is still O(nlogn) using a sorting algorithm lik eheap sort merge sort etc.
+  // Auxiliary Space Complexity: O(1) if quick select is used.
+ 
+ int partition(int arr[], int l, int r) {
+    int x = arr[r], i = l;
+    for (int j = l; j <= r - 1; j++){
+        if (arr[j] <= x) {
+            swap(&arr[i], &arr[j]);
+            i++;
+        }
+    }
+    swap(&arr[i], &arr[r]);
+    return i;
+}
+
+ int kthSmallest_helper(int arr[], int l, int r, int k) {
+    // If k is smaller than number of elements in array
+    if (k > 0 && k <= r - l + 1) {
+        // Partition the array around last element and get
+        // position of pivot element in sorted array
+        int pos = partition(arr, l, r);
+ 
+        // If position is same as k
+        if (pos-l == k-1)
+            return arr[pos];
+        if (pos-l > k-1)  // recur the left subarray
+            return kthSmallest_helper(arr, l, pos-1, k);
+ 
+        // Else recurse the right subarray
+        return kthSmallest_helper(arr, pos+1, r, k-pos+l-1);
+    }
+ 
+    // If k is more than number of elements in array
+    return INT_MAX;
+}
+ 
+ 
+  int kthSmallest(int[] arr, int k) {
+    int result = kthSmallest_helper(arr,k, 0, arr.size()-1);
+    if(result != INT_MAX)
+     return result;
+    return -1;
+  }
+
+}
+
