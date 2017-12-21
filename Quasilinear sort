@@ -1,0 +1,316 @@
+Problem set 1 :
+
+/**
+ *  Quasilinear Sorts
+ *
+ *  Solve the following quasilinear sorting algorithms.
+ */
+
+
+/**
+ *  1. Indicate whether the following sorting algorithms are stable or
+ *     unstable.
+ *  Quicksort: Unstable
+ *  Mergesort: Stable
+ *  Heapsort: Unstable
+ */
+
+
+import java.io.*;
+import java.util.*;
+
+
+/**
+ *  Implement Quicksort in-place.
+ *
+ *  NOTE: In-place means to manipulate the input array rather than create a
+ *        new array.
+ *
+ *  Input:  {Array}
+ *  Output: {Array}
+ *
+ *  Example: quicksort([4, 15, 16, 50, 8, 23, 42, 108]);
+ *           //[4, 8, 15, 16, 23, 42, 50, 108]
+ */
+
+ // Worse Time Complexity: O(N^2)
+ // Worse Auxiliary Space Complexity: O(N)
+ // Average Time Complexity: O(Nlog(N))
+ // Average Auxiliary Space Complexity: O(log(N))
+ class Quicksort {
+
+   public static int[] compute(int[] input) {
+     divide(input, 0, input.length - 1);
+     return input;
+   }
+
+   private static void divide(int[] input, int begin, int end) {
+     int mid = begin;
+
+     if (begin >= end) {
+       return;
+     }
+     for(int i = begin; i < end; i++){
+       if(input[i] < input[end]){
+         swap(input, mid, i);
+         mid++;
+       }
+     }
+     swap(input, mid, end);
+     divide(input, begin, mid - 1);
+     divide(input, mid + 1, end);
+   }
+
+   private static void swap(int[] arr, int i, int j){
+     int temp = arr[i];
+     arr[i] = arr[j];
+     arr[j] = temp;
+   }
+ }
+
+
+/**
+ *  Implement Mergesort.
+ *
+ *  Input:  {Array}
+ *  Output: {Array}
+ *
+ *  Example: mergesort([4, 15, 16, 50, 8, 23, 42, 108]);
+ *           //[4, 8, 15, 16, 23, 42, 50, 108]
+ */
+
+ // Worse Time Complexity: O(Nlog(N))
+ // Worse Auxiliary Space Complexity: O(N)
+ // Average Time Complexity: O(Nlog(N))
+ // Average Auxiliary Space Complexity: O(N)
+class Mergesort {
+
+  public static int[] compute(int[] input) {
+    if (input.length < 2) {
+      return input;
+    }
+    int mid = input.length / 2;
+    int[] leftArray = new int[mid];
+    int[] rightArray = new int[input.length - mid];
+    System.arraycopy(input, 0, leftArray, 0, leftArray.length);
+    System.arraycopy(input, mid, rightArray, 0, rightArray.length);
+    return merge(compute(leftArray), compute(rightArray));
+  }
+
+  private static int[] merge(int[] array1, int[] array2){
+    int[] result = new int[array1.length + array2.length];
+
+    for (int i = 0, j = 0; i + j < result.length;) {
+      if (j >= array2.length || (i < array1.length && array1[i] < array2[j])) {
+        result[i + j] = array1[i];
+        i++;
+      } else {
+        result[i + j] = array2[j];
+        j++;
+      }
+    }
+    return result;
+  }
+}
+
+/**
+ *  Implement Heapsort in-place.
+ *
+ *  NOTE: In-place means to manipulate the input array rather than create a
+ *        new array.
+ *
+ *  Input:  {Array}
+ *  Output: {Array}
+ *
+ *  Example: heapsort([4, 15, 16, 50, 8, 23, 42, 108])
+ *           //[4, 8, 15, 16, 23, 42, 50, 108]
+ */
+
+ // Worse Time Complexity: O(Nlog(N))
+ // Worse Auxiliary Space Complexity: O(1)
+ // Average Time Complexity: O(Nlog(N))
+ // Average Auxiliary Space Complexity: O(1)
+class Heapsort {
+  public static int[] compute(int[] arr) {
+    for (int i = 1; i < arr.length; i++) {
+      insert(arr, i);
+    }
+    for (int i = arr.length; i > 1; i--) {
+      remove(arr, i);
+    }
+    return arr;
+  }
+
+  private static int getParent(int child) {
+    return (child - 1) / 2;
+  }
+
+  private static int getChild(int parent, int[] arr, int heapLength) {
+    int left = parent * 2 + 1;
+    if (left >= heapLength - 1 || arr[left] >= arr[left + 1]) {
+      return left;
+    }
+    return left + 1;
+  }
+
+  private static void bubbleUp(int[] arr, int heapLength) {
+    int child = heapLength - 1;
+    int parent = getParent(child);
+    int temp;
+    while (child > 0 && arr[parent] < arr[child]) {
+      temp = arr[parent];
+      arr[parent] = arr[child];
+      arr[child] = temp;
+      child = parent;
+      parent = getParent(child);
+    }
+  }
+
+  private static void bubbleDown(int[] arr, int heapLength) {
+    int parent = 0;
+    int child = getChild(parent, arr, heapLength);
+    int temp;
+    while (child < heapLength && arr[parent] < arr[child]) {
+      temp = arr[parent];
+      arr[parent] = arr[child];
+      arr[child] = temp;
+      parent = child;
+      child = getChild(parent, arr, heapLength);
+    }
+  }
+
+  private static void insert(int[] arr, int heapLength) {
+    bubbleUp(arr, heapLength + 1);
+  }
+
+  private static void remove(int[] arr, int heapLength) {
+    int temp = arr[0];
+    arr[0] = arr[heapLength - 1];
+    arr[heapLength - 1] = temp;
+    bubbleDown(arr, heapLength - 1);
+  }
+}
+
+Another implementation: 
+/**
+ *  Quasilinear Sorts
+ *
+ *  Quicksort
+ *
+ *  Prompt:    Given an unsorted array of integers, return the array
+ *             sorted using quicksort.
+ *
+ *
+ *  Input:     input {Array}
+ *  Output:    {Array}
+ *
+ *  Example:   [3,9,1,4,7] --> [1,3,4,7,9]
+ *
+ *
+ *  Mergesort
+ *
+ *  Prompt:    Given an unsorted array of integers, return the array
+ *             sorted using mergesort.
+ *
+ *  Input:     {Array}
+ *  Output:    {Array}
+ *
+ *  Example:   [3,9,1,4,7] --> [1,3,4,7,9]
+ */
+
+import java.util.*;
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Solution: Quick Sort:
+
+// Worse Time Complexity: O(n^2)
+// Worse Auxiliary Space Complexity: O(1) in place sort
+// Average Time Complexity: O(nlogn) if we got lucky and picked the right pivot
+// Average Auxiliary Space Complexity: O(1)
+
+int partition(int arr[], int left, int right) {
+      int i = left, j = right;
+      int tmp;
+      int pivot = arr[(left + right) / 2];
+     
+      while (i <= j) {
+            while (arr[i] < pivot)
+                  i++;
+            while (arr[j] > pivot)
+                  j--;
+            if (i <= j) {
+                  tmp = arr[i];
+                  arr[i] = arr[j];
+                  arr[j] = tmp;
+                  i++;
+                  j--;
+            }
+      };
+     
+      return i;
+}
+ 
+void quickSort(int arr[], int left, int right) {
+      int index = partition(arr, left, right);
+      if (left < index - 1)
+            quickSort(arr, left, index - 1);
+      if (index < right)
+            quickSort(arr, index, right);
+}
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Solution: Merge Sort
+
+// Worse Time Complexity: O(nlogn)
+// Worse Auxiliary Space Complexity: O(n)
+// Average Time Complexity: O(nlogn)
+// Average Auxiliary Space Complexity: O(n)
+
+#include <iostream>
+using namespace std;
+
+void mergesort(vector <int> a, int low, int high) {
+    int mid;
+    if (low < high) {
+        mid=(low+high)/2;
+        mergesort(a,low,mid);
+        mergesort(a,mid+1,high);
+        merge(a,low,high,mid);
+    }
+    return;
+}
+void merge(vector <int> a, int low, int high, int mid){
+    int i, j, k, c[50];
+    i = low;
+    k = low;
+    j = mid + 1;
+    while (i <= mid && j <= high){
+        if (a[i] < a[j])  {
+            c[k] = a[i];
+            k++;
+            i++;
+        }
+        else {
+            c[k] = a[j];
+            k++;
+            j++;
+        }
+    }
+    while (i <= mid) {
+        c[k] = a[i];
+        k++;
+        i++;
+    }
+    while (j <= high) {
+        c[k] = a[j];
+        k++;
+        j++;
+    }
+    for (i = low; i < k; i++) {
+        a[i] = c[i];
+    }
+}
