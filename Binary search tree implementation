@@ -1,0 +1,80 @@
+  Problem 1: TreeNode class
+ *
+ *  Prompt:    Create a TreeNode class
+ *             The TreeNode class should contain the following public properties:
+ *
+ *                   value:   {Integer}
+ *                    left:   {TreeNode} (initially null)
+ *                   right:   {TreeNode} (initially null)
+ *
+ *                 Example:   var TreeNode sample = new TreeNode(1)
+ *                            sample.value        // 1
+ *                            sample.left         // null
+ *                            sample.right        // null
+ *
+ *
+ *  Problem 2: BinarySearchTree class.
+ *
+ *  Prompt:    Create a BinarySearchTree class
+ *
+ *             The BinarySearchTree class should contain the following public
+ *             properties:
+ *
+ *                    root:   {TreeNode} (initially null)
+ *                    size:   {Integer}
+ *
+ *             The BinarySearchTree class should also contain the following
+ *             public methods:
+ *
+ *                  insert:   A method that takes takes an integer value, and
+ *                            creates a node with the given input.  The method
+ *                            will then find the correct place to add the new
+ *                            node. Values larger than the current node node go
+ *                            to the right, and smaller values go to the left.
+ *
+ *                            Input:     {Integer}
+ *                            Output:    {Void}
+ *
+ *                  search:   A method that will search to see if a node with a
+ *                            specified value exists and returns true or false
+ *                            if found.
+ *
+ *                            Input:     {Integer}
+ *                            Output:    {Boolean}
+ */
+  
+  
+  // Time Complexity: O(logn)
+  // Auxiliary Space Complexity: O(n) worst case to implement a BST.
+  node* insert(node* node, int key){
+    /* If the tree is empty, return a new node */
+    if (node == NULL) return newNode(key);
+ 
+    /* Otherwise, recur down the tree */
+    if (key < node->key)
+        node->left  = insert(node->left, key);
+    else if (key > node->key)
+        node->right = insert(node->right, key);   
+ 
+    /* return the (unchanged) node pointer */
+    return node;
+}
+  
+
+
+  
+  // Time Complexity: O(logn)
+  // Auxiliary Space Complexity: O(n) worst case to implement a BST.
+  node* search(node* root, int key){
+    // Base Cases: root is null or key is present at root
+    if (root == NULL || root->key == key)
+       return root;
+    
+    // Key is greater than root's key
+    if (root->key < key)
+       return search(root->right, key);
+ 
+    // Key is smaller than root's key
+    return search(root->left, key);
+
+}
