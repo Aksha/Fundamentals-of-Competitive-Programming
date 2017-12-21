@@ -59,3 +59,236 @@ int main() {
     }
     return 0;
 }
+
+
+Problem set 2: 
+
+/**
+ *  List the steps involved to build a Helper Method Recursion algorithm.
+  Answer: 
+  1. instantiate scope variables in the wrapper method.
+  3. a. define helper.
+  4. base case.
+  5. recursive case.
+  3. b. invoke helper.
+  2. Return scope variables.
+ */
+
+
+/**
+ * Should the recursive case or base case typically be tackled first?
+ * base case should be tackled first.
+ * declare a private and separate helper method and invoke it in wrapper method
+ In the help method, we start with a base condition, some operations and finally recursive calls to itself.
+ */
+
+
+/**
+ *  Print each integer in an array in order using Helper Method Recursion
+ *
+ *  Input:   arr {Array}
+ *  Output:  {void}
+ *
+ *  Example: int[] nums = {1, 2, 3};
+ *
+ *          PrintArray.compute(nums) =>
+ *          1
+ *          2
+ *          3
+ */
+
+Solution:
+---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+
+void printInteger(vector<int>arr){
+   printInteger_helper(arr,0);
+}
+void printInteger_helper(vector<int> arr, int i){
+  if(i == arr.size())
+     return;
+  cout << arr[i] << endl;
+  printInteger_helper(arr,i+1);
+}
+
+/**
+ *  Given an integer array, print each item backwards using Helper Method
+ *      Recursion
+ *
+ *  Input:   arr {Array}
+ *  Output:  {void}
+ *
+ *  Example: int[] nums = {1, 2, 3};
+ *
+ *          PrintReverse.compute(nums) =>
+ *          3
+ *          2
+ *          1
+ */
+
+
+Solution:
+------------------------------------------------------------------------------------------------------------------------------
+void printInteger(vector<int>arr){
+   printInteger_helper(arr,0);
+}
+void printInteger_helper(vector<int> arr, int i){
+  if(i == arr.size())
+     return;
+  printInteger_helper(arr,i+1);
+  cout << arr[i] << endl;
+}
+
+/**
+ *  2c. Reverse a string using Helper Method Recursion
+ *
+ *  Input:   String
+ *  Output:  String
+ *
+ *  Example: String greeting = 'hello';
+ *          ReverseString.compute(greeting) => 'olleh'
+ */
+
+
+Solution:
+------------------------------------------------------------------------------------------------------------------------------
+void reverse_helper(string &str, int index, int size){
+    char temp;
+    temp = str[index];
+    str[index] = str[size - index];
+    str[size - index] = temp;
+    if (index == size / 2)
+    {
+        return;
+    }
+    reverse(str, index + 1, size);
+}
+
+void reverse(string str){
+  int index = 0;
+  int size = str.size();
+  reverse_helper(str,index,size);
+  cout << str << endl;
+}
+
+
+/**
+ * Flatten a two dimensional integer array using Helper Method of Recursion
+ *
+ * Input:   two-dimensional Integer Array
+ * Output:  Array of Integers
+ *
+ * Example: int matrix[][]= {{1, 2, 3}, {4, 5, 6}, {7, 8, 9}};
+ *          Flatten.compute(matrix) =>
+ *          {1, 2, 3, 4, 5, 6, 7, 8, 9}
+ */
+
+Solution:
+------------------------------------------------------------------------------------------------------------------------------
+
+int flattenAnArray(vector<int>& nestedList) {
+        vector<int> result;
+        for(auto i : nestedList) {
+            dfs(i, result);
+        }
+        return result;
+    }
+    
+ void dfs(int i, vector<int> & result) {
+        if(i.isInteger()) {
+            result.push_back(i);
+        } else {
+            for(auto n_ni : i.getList()) {
+                dfs(n_ni, result);
+            }
+        }
+  }
+  
+  
+ /**
+ * Given a base and an exponent, create a method to find the power using
+ *     Helper Method Recursion
+ *
+ * Input:   Two Integers, base and exponent
+ * Output:  Integer
+ *
+ * Example: Power.compute(3, 4) => 81
+ */
+
+
+Solution:
+------------------------------------------------------------------------------------------------------------------------------
+ int power(int base, int exponent){
+    if (exponent != 0)
+        return (base*power(base, exponent-1));
+    else
+        return 1;
+ }
+ 
+ 
+ /**
+ * 2g. Merge two sorted arrays using the Helper Method Recursion
+ *
+ * Input:   Two Integer Arrays, both sorted
+ * Output:  Integer Array, sorted
+ *
+ * Example: int[] nums1 = {1, 4, 7};
+ *          int[] nums2 = {2, 3, 6, 9};
+ *
+ *          Merge.compute(nums1, nums2) =>
+ *          { 1, 2, 3, 4, 6, 7, 9 }
+ */
+
+Solution:
+------------------------------------------------------------------------------------------------------------------------------
+  
+vector<int> mergeArrays(vector<int> arr1, vector<int> arr2) {
+    vector<int> result;
+    return traverse(arr1,arr2,result);
+}
+
+vector<int> traverse(i, j) {
+        
+        if(i >= arr1.length && j >= arr2.length) {
+            return;
+        }
+        
+        if(i >= arr1.length) {
+            result.push(arr2[j])
+            traverse(i, j + 1, result);
+        }
+        
+        if(j >= arr2.length) {
+            result.push(arr1[i]);
+            traverse(i + 1, j, result);
+            
+        } 
+        if(arr1[i] <= arr2[j]) {
+            result.push(arr1[i]);
+            traverse(i + 1, j, result)
+            
+        } 
+        if(arr1[i] > arr2[j]) {
+            result.push(arr2[j]);
+            traverse(i, j + 1, result);
+        }
+    }     
+    return result;
+}
+
+Another solution: (iterative approach)
+
+The following is the iterative approach: 
+
+void merge(vector<int>& nums1, int m, vector<int>& nums2, int n) {
+        int indexm = m-1;
+        int indexn = n-1;
+        int count = m+n - 1;
+        while(indexn >= 0){
+            if(indexm >= 0 && nums1[indexm] > nums2[indexn]){
+                nums1[count--] = nums1[indexm--];
+            }
+            else{
+                nums1[count--] = nums2[indexn--];
+            }
+        }
+ }
