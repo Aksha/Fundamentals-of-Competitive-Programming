@@ -1,0 +1,252 @@
+//Tip: For the binary tree problems use the serialized and deserialize functions along with the TreeNode class to quickly create sample Trees to test.
+
+1. Count Leaves
+Given a root node of a binary tree, count the number of leaves in the tree.
+
+Parameters
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of following tree --> 3 binary tree
+
+Solution: int countLeaves(TreeNode* node){ if(node == NULL) return 0; if(node -> left == NULL && node-> right == NULL) return 1; return countLeaves(node->left) + countLeaves(node->right); }
+
+2. Max Value
+Given a root node of a binary tree, where the values of nodes are integers, return the maximum value of a node.
+
+Parameters
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of following tree --> 7 binary tree
+
+Solution:
+
+unsigned int maxValue(TreeNode* node, int maximum){ if(node == null) return INT_MIN; int maximum = node->val; int left = maxValue(node->left); int right = maxVal(node->right); if(left > maximum) maximum = left; if(right > maximum) maximum = right; return maximum; }
+
+3. Max Depth
+Given a root node of a binary tree, determine the maximum depth of the tree.
+
+Parameters
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples root of following tree --> 3
+binary tree
+
+Solution: int maximum = 0; int maxDepth(TreeNode* node){ if(node == NULL) return -1; int depth = 0; return maxDepth_helper(node, depth); }
+
+int maxDepth_helper(TreeNode* node, int depth){ if(depth > maximum) maximum = depth; if(node == NULL || (node->left == NULL && node->right == NULL)) return maximum; return maxDepth_helper(node->left, depth+1) || maxDepth_helper(node->right, depth+1); }
+
+4. Get Level
+Given a root node of a binary tree, return an array of the values of all nodes at a target level.
+
+Parameters
+Input: node {TreeNode}
+Output: {Array of Integers}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of following tree --> [4, 5, 6] ![binary tree](http://res.cloudinary.com/outco/image/upload/c_scale,h_450,q_81,r_0,w_600,x_1039,y_659/v1497392714/Binary_Tree_-_31_tml3dz.png
+
+Solution:
+
+void printNodesAtLevel(struct node* root, int currentLevel, int level) { if(root == NULL) { return;
+}
+if(currentLevel == level) { printf(" %d ", root->data); return; }
+printNodesAtLevel(root->left, currentLevel+1, level); printNodesAtLevel(root->right, currentLevel+1, level); }
+
+5. Invert Tree
+Given a root node of a binary tree, return back the mirror image of that tree.
+
+Parameters
+Input: node {TreeNode}
+Output: {TreeNode}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of tree on the left --> root of tree to the right binary tree
+
+Solution: void mirror(TreeNode* node){ if (node==NULL) return;
+else { TreeNode* temp; mirror(node->left); mirror(node->right); temp = node->left; node->left = node->right; node->right = temp; } }
+
+6. Get Widths
+Given a root node of a binary tree, return an array of the widths at each level
+
+Parameters
+Input: node {TreeNode}
+Output: {Array of Integers}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of following tree --> [[1], [2, 3], [4, 5, 6], [7]] binary tree
+
+Solution:
+
+int maxWidth(TreeNode* root){
+
+if (root == NULL) return 0; vector result; queue<TreeNode*> q; q.push(root); while (!q.empty()) { int count = q.size() ; result.push_back(count); // Iterate for all the nodes in the queue currently while (count--) TreeNode* temp = q.front(); q.pop();
+if (temp->left != NULL) q.push(temp->left); if (temp->right != NULL) q.push(temp->right); } } return result; }
+
+7. Children Sum Property
+Given a root node of a binary tree, determine if each node's value is the sum of it's childrens' values. Leaf nodes do not have to meet this condition.
+
+Parameters
+Input: node {TreeNode}
+Output: {Boolean}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+see image below binary tree
+
+int isSumProperty(c* node) { int left = 0, right_data = 0; if(node == NULL || (node->left == NULL && node->right == NULL)) return true; else { if(node->left) left = node->left->data; if(node->right) right = node->right->data; if((node->data == left + right)&& isSumProperty(node->left) && isSumProperty(node->right)) return true; else return false; } }
+
+8. Breadth First Spiral
+Given a root node of a binary tree, return an array of each node value in spiral breadth first order. See example below for spiral breadth first ordering.
+
+Parameters
+Input: node {TreeNode}
+Output: {Array of Integers}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root of following tree --> [1,3,2,4,5,6,7] binary tree
+
+vector<vector > zigzagLevelOrder(TreeNode* root) { if (root == NULL) { return vector<vector > (); } vector<vector > result; queue<TreeNode*> nodesQueue; nodesQueue.push(root); bool leftToRight = true; while ( !nodesQueue.empty()) { int size = nodesQueue.size(); vector row(size); for (int i = 0; i < size; i++) { TreeNode* node = nodesQueue.front(); nodesQueue.pop(); // find position to fill node's value int index = (leftToRight) ? i : (size - 1 - i); row[index] = node->val; if (node->left) { nodesQueue.push(node->left); } if (node->right) { nodesQueue.push(node->right); } } // after this level leftToRight = !leftToRight; result.push_back(row); } return result; }
+
+9. Lowest Common Ancestor
+Given the root node, and two target nodes, find the lowest common ancestor of the two nodes.
+
+Parameters
+Input: root {TreeNode} Input: node1 {TreeNode}
+Input: node2 {TreeNode}
+Output: node {TreeNode}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node, TreeNode 4, TreeNode 3 --> TreeNode 1 binary tree
+
+TreeNode* commonAncestor(TreeNode* root, TreeNode* node1, TreeNode* right) { if(root == NULL || node1 == NULL || node2 == NULL) return NULL; if(node1 == root || node2 == root) return root; TreeNode* p = commonAncestor(root->left, node1, node2); TreeNode* q = commonAncestor(root->right, node1, node2);
+if(p && q) return root; return (p != NULL) ? p : q; }
+
+10. Diameter
+Given the root node of a binary tree, determine the diameter of the tree.
+
+The diameter of a tree is the number of nodes in path from two nodes that are furthest from each other.
+
+Parameters
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node of following tree --> 7 binary tree
+
+int diameterOfBinaryTree(TreeNode* root) { if(root == nullptr) return 0; int res = depth(root->left) + depth(root->right); return max(res, max(diameterOfBinaryTree(root->left), diameterOfBinaryTree(root->right))); }
+
+int depth(TreeNode* root){ if(root == nullptr) return 0; return 1 + max(depth(root->left), depth(root->right)); }
+
+11. Symmetric Tree
+Given the root node of a binary tree, determine whether the tree is symmetric about its root.
+
+Parameters
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node of following tree --> true binary tree
+
+bool isSymmetric(TreeNode *root) { if(root == NULL) {return true;} return isSymmetricCheck(root->left, root->right); }
+
+bool isSymmetricCheck(TreeNode* LeftTree, TreeNode* RightTree){ if(LeftTree == NULL && RightTree == NULL){ return true; } if((LeftTree == NULL && RightTree != NULL) || (LeftTree != NULL && RightTree == NULL)){ return false; } else { return ((LeftTree->val == RightTree->val) && isSymmetricCheck(LeftTree->left,RightTree->right) && isSymmetricCheck(LeftTree->right,RightTree->left)); } }
+
+12. Post-Order DFS using While Loop (Advanced)
+Given the root node of a binary tree, print the values in post-order depth first traversal using a while loop and a stack.
+
+Parameters
+Input: node {TreeNode}
+Output: {Void}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node of following tree --> 9, 2, 8, 6, 4, 7, 5, 3, 1 binary tree vector postorderTraversal(TreeNode* root) { vector res; if(root==null) { return res; } stack<TreeNode*> s; s.push(root); while(!s.isEmpty()) { TreeNode* temp = s.top(); if(temp.left==null && temp.right==null) { TreeNode* pop = s.pop(); res.push_back(pop.val); } else { if(temp.right!=null) { s.push(temp.right); temp.right = null; } if(temp.left!=null) { s.push(temp.left); temp.left = null; } } } return res; }
+
+13. Max Sum Path (Advanced)
+Given the root node of a binary tree, determine the sum of the values in a path that results in the greatest sum.
+
+Parameters
+The path does not need to include the root node.
+
+Input: node {TreeNode}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node of following tree --> 24 binary tree
+
+int maxPathSum_helper(TreeNode* root, int& maximum){ if(root == NULL) return 0; int l = std::max(0, maxPathSum_helper(root->left, maximum)); int r = std::max(0, maxPathSum_helper(root->right, maximum)); if(maximum < root->val + l + r) maximum = root->val + l + r; return root->val += max(l, r); }
+
+int maxPathSum(TreeNode* root) { if(root == NULL) return 0; int maximum = INT_MIN; maxPathSum_helper(root, maximum); return maximum; }
+
+14. Root Path using Pure Recursion (Advanced)
+Given the root node of a binary tree and a target node, return the path of values from the root to the target.
+
+Parameters
+Input: root {TreeNode} Input: target {TreeNode}
+Output: {Array of Integers}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+root node of following tree, TreeNode 5 --> [1, 2, 5] binary tree
+
+vector<vector> pathSum(TreeNode* root, int sum) { vector<vector > paths; vector path; findPaths(root, sum, path, paths); return paths;
+} void findPaths(TreeNode* node, int sum, vector& path, vector<vector >& paths) { if (!node) return; path.push_back(node -> val); if (!(node -> left) && !(node -> right) && sum == node -> val) paths.push_back(path); findPaths(node -> left, sum - node -> val, path, paths); findPaths(node -> right, sum - node -> val, path, paths); path.pop_back(); }
+
