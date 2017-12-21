@@ -1,0 +1,218 @@
+// Heads up: Utilize the frequency count pattern to solve these problems. Use a Hash Set or an Array instead of a Hash Table where applicable.
+
+1. Unique
+Given an array of integers, return an array with all duplicates removed.
+
+Parameters
+Input: arr {Array of Integers}
+Output: {Array of Integers}
+
+Constraints
+
+Time: O(N)
+Space: O(N)
+
+Examples
+[1, 2, 3, 4, 5, 6] --> [1, 2, 3, 4, 5, 6]
+[1, 1, 2, 2, 3, 3]' --> []
+[1, 2, 3, 1, 2] --> [3]
+
+Solution: Use a hashset to get O(N) time and O(N) space.
+
+More Info: Space can be further optimized to O(1) if the input array is sorted (Can do it in-place) which would make the time complexity O(NlogN) but for now i'm just going to focus on the hashset solution for linear time and space.
+
+#include #include #include <unordered_map>
+
+using namespace std;
+
+vector remDuplicates(vector arr){ vector result; unordered_map<int,int> hmap; for(int i = 0; i < arr.size(); i++) hmap[arr[i]]++; for(auto it = hmap.begin(); it != hmap.end(); ){ if(it->second > 1) it = hmap.erase(it) else ++it; } for(auto it = hmap.begin(); it != hmap.end(); it++) result.push_back(it->first); return result; }
+
+// To execute C++, please define "int main()" int main() { vector arr = {1, 2, 3, 4, 5, 6}; vector result = remDuplicates(arr); for(auto i = 0; i < result.size(); i++) cout << result[i] << endl; return 0; }
+
+2. Word Count
+Given an body of text, return a hash table of the frequency of each word.
+
+Parameters Input: text {String}
+Output: {Hash Table}
+
+Constraints If N is the number of characters in the string.
+
+Capital and lower case versions of the same word should be counted is the same word.
+
+Remove punctuations from all words.
+
+Time: O(N) Space: O(N)
+
+Examples
+'The cat and the hat.' --> '{ the: 2, cat: 1, and: 1, hat: 1 }'
+'As soon as possible.' --> '{ as: 2, soon: 1, possible: 1 }'
+'It's a man, it's a plane, it's superman!' --> '{ its: 3, a: 2, man: 1, plane: 1, superman: 1 }'
+
+Solution:
+
+Use a hashmap:
+
+void getEachWord(string s, vector &words){ string val; istringstream in(s); while(in){ in >> val; words.insert(in) } }
+
+unordered_map<string, int> wordCount(string s){ unordered_map<string, int> result; vector words; getEachWord(s, words); for(auto i = 0; i < words.size(); i++){ //over here if(result.find(words[i]) == result.end()){ // result.insert(words[i],1); } else{ result[words[i]]++; } }
+return result; }
+
+3. RGB Set
+Given a string of characters where each character is either 'r', 'g', or 'b', determine the number of complete sets of 'rgb' that can be made with the characters.
+
+Parameters
+Input: str {String}
+Output: {Integer}
+
+Constraints
+Time: O(N)
+Space: O(1)
+
+Examples
+'rgbrgb' --> 2
+'rbgrbrgrgbgrrggbbbbrgrgrgrg' --> 7
+'bbrr' --> 0
+
+int rgbSet(string str){ int countR = 0; int countG = 0; int countB = 0; for(int i = 0; i < str.size(); i++){ if(str[i] == 'r') countR++; else if(str[i] == 'g') countG++; else if(str[i] == 'b') countB++;
+} int result = INT_MAX; if(result > countR) result = countR; if(result > countG) result = countG; if(result > countB) result = countB; return result; }
+
+4. Missing Number
+Given range of 1 to N and an array of unique integers that are within that range, return the missing integers not found in the array
+
+Parameters
+Input: n {Integer} Input: arr {Array of Integers}
+Output: {Array of Integers}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+4, [1, 4, 2] --> [3]
+8, [4, 7, 1, 6] --> [2, 3, 5, 8]
+6, [6, 4, 2, 1] --> [3, 5]
+
+Solution: vector missingNumber(vector arr, int n){ unordered_set hset; vector result; for(int i = 0; i < arr.size(); i++) hset.insert(arr[i]); int minimum = min_element(arr.begin(), arr.end()); int maximum = max_element(arr.begin(), arr.end()); for(int i = minimum; i <= maximum; i++){ if(hset.find(i) == hset.end()) //<-- if the element is not found in the hashset insert it in the result result.push_back(i); } return result; }
+
+5. Letter Sort
+Given a string of letters, return the letters in sorted order.
+
+Parameters
+Input: str {String}
+Output: {String}
+
+Constraints
+Time: O(N)
+Space: O(1)
+
+Examples
+hello --> ehllo
+whiteboard --> abdehiortw
+one --> eno
+
+string letterSort(string s){ string result; int temp[26] = {0}; for(int i = 0; i < s.size(); i++) temp[s[i] - 'a']++; for (ch = 'a'; ch <= 'z'; ch++) { x = ch - 'a'; for (c = 0; c < temp[x]; c++){ s += ch; } } return s; }
+
+6. Character Mode
+Given a string, find the most frequent occurring letter(s) in the string
+
+Parameters Input: str {String}
+Output: {String}
+
+Constraints If more than one letter is tied for the most frequent, return a string of all the letters in one string.
+
+Time: O(N)
+Space: O(N)
+
+Examples
+'hello' --> 'l'
+'A walk in the park' --> 'a'
+'noon' --> 'no'
+
+string mostFrequent(string str){ string result; int maximum = INT_MIN; unordered_map<char,int> hmap; for(int i = 0; i < str.size(); i++) hmap[str[i]]++; for(auto it = hmap.begin(); it!= hmap.end(); it++) if(it->second > maximum) maximum = it->second; for(auto it:hmap){ if(it->second == maximum)     result += (*it)->first;  }  return result; }
+
+7. Sort Digits
+Given an integer, soft the digits in ascending order and return the new integer. Ignore leading zeros.
+
+Parameters
+Input: num {Integer}
+Output: {Integer}
+
+Constraints
+Do not convert the integer into a string or other data type.
+
+Time: O(N) where N is the number of digits.
+Space: O(1)
+
+Examples
+8970 --> 789
+32445 --> 23445
+10101 --> 111
+
+int sortDigits(int num){ int buffer[10] = {-1}; int result = 0; while(num != 0){ if(num%10 == 0) break; buffer[num%10]++; num = num/10; } for(int i = 1; i < buffer.size(); i++){ while(buffer[i] != -1){ result += i*10; } return result; } }
+
+8. Get Duplicates
+Given an array of values, return only the values that have duplicates in the array
+
+Parameters
+Input: arr {Array}
+Output: {Array}
+
+Constraints
+Time: O(N)
+Space: O(N)
+
+Examples
+[1, 2, 4, 2] --> [2]
+[3, 2, 3, 2, 3, 3, 4] --> [3, 2]
+[1, 2, 3, 4] --> []
+
+vector getDup(vector arr){ unordered_map<int,int> hmap; vector result; for(int i = 0; i < arr.size();i++) hmap[arr[i]]++; for(auto i : hmap) if(i.second > 1) result.push_back(i.first); return result; }
+
+9. Anagram Pair
+Given two strings, determine if the strings are anagrams of one another.
+
+Two words are anagrams of one another if they contain the same letters.
+
+Parameters
+Input: str1 {String}
+Input: str2 {String}
+Output: {Boolean}
+
+Constraints
+With N as the length of the first string, and M as the length of the second string.
+
+Time: O(N)
+Space: O(N)
+
+Examples
+"cat", "act" --> true
+"cat", "dog" --> false
+"racecar", "aaccrres" --> false
+
+bool isAnagram(string s, string t) { if(s.length() != t.length()){ return false; } unordered_map<char, int> holder; for(int i = 0; i < s.size(); i++){ holder[s[i] -'a']++; holder[t[i] - 'a']--; } for(auto a : holder){ if(a.second != 0) return false; } return true; }
+
+10. Anagram Palindrome
+Given a string, determine if the string can be rearranged to form a palindrome.
+
+A palindrome is a word that is the same as its reversed. For example: "racecar" and "noon" are palindromes because they match their reversed version respectively. On the other hand, "cat" is not a palindrome because "cat" does not equal "tac".
+
+Parameters
+Input: str {String}
+Output: {Boolean}
+
+Constraints
+
+Assume the string only contains lowercase letters and no spaces.
+
+Time: O(N)
+Space: O(1)
+
+Examples
+"carrace" --> true ("carrace" can be rearranged to "racecar")
+"cat" --> false
+
+Solution 1:
+
+bool palindrome(string s){ if( equal(s.begin(), s.begin() + s.size()/2, s.rbegin()) ) return true; else return false; }
+
+Solution 2: bool palindrome(string s){ int i = 0; int j = s.size() - 1; while(i<j){ if(s[i] != s[j]) return false; i++; j--; } return true; }
