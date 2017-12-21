@@ -1,0 +1,80 @@
+ * Insertion Sort
+ *
+ *  Prompt:    Given an unsorted array of integers, return the array sorted
+ *             using insertion sort.
+ *
+ *  Input:     input {Array}
+ *  Output:    {Array}
+ *
+ *  Example:   [3,9,1,4,7] --> [1,3,4,7,9]
+ *
+ *
+ *  Selection Sort
+ *
+ *  Prompt:    Given an unsorted array of integers, return the array
+ *             sorted using selection sort.
+ *
+ *  Input:     input {Array}
+ *  Output:    {Array}
+ *
+ *  Example:   [3,9,1,4,7] --> [1,3,4,7,9]
+ *
+ *
+ *  Bubble Sort
+ *
+ *  Prompt:    Given an unsorted array of integers, return the array
+ *             sorted using bubble sort.
+ *
+ *  Input:     input {Array}
+ *  Output:    {Array}
+ *
+ *  Example:   [3,9,1,4,7] --> [1,3,4,7,9]
+ */
+
+------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------
+Solutions/Answers:
+
+class BasicSort{  
+  public:
+  //Insertion Sort: O(n^2) time and O(1) space complexity.
+  void insertionSort(int arr[], int length) {
+        int i, j, tmp;
+        for (i = 1; i < length; i++) {
+              j = i;
+              while (j > 0 && arr[j - 1] > arr[j]) {
+                    tmp = arr[j];
+                    arr[j] = arr[j - 1];
+                    arr[j - 1] = tmp;
+                    j--;
+              }
+        }
+  }
+
+  //Selection sort: Combination of searching and sorting. O(n^2) time and O(1) space complexity.
+
+  void SelectionSort(vector <int> &num) {
+        int i, j, first;
+        int numLength = num.length( );
+        for (i= numLength - 1; i > 0; i--) {
+             first = 0;                 // initialize to subscript of first element
+             for (j=1; j<=i; j++)  { // locate smallest between positions 1 and i.
+                   if (num[j] < num[first])
+                   first = j;
+            }
+           swap(num[first],num[i]);
+       }
+       return;
+  }
+
+  //Bubble sort: O(n^2) time and O(1) space
+
+  void bubblesort(int arr[], int length) {
+    for(i=0; i<(n-1); i++){
+      for(j=0; j<(n-i-1); j++){
+        if(arr[j]>arr[j+1])
+          swap(arr[j],arr[j+1]);
+        }
+      }
+    }
+  }
+};
